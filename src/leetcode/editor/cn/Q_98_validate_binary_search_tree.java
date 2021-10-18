@@ -2,6 +2,9 @@ package leetcode.editor.cn.q_98;
 
 import leetcode.editor.cn.def.*;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 //给你一个二叉树的根节点 root ，判断其是否是一个有效的二叉搜索树。 
 //
 // 有效 二叉搜索树定义如下： 
@@ -62,6 +65,8 @@ class Solution {
     private long pre = Long.MIN_VALUE;
 
     // 中序遍历
+    // 0ms 100.00% beat
+    // 38.2MB 13.10% beat
     private boolean dfs(TreeNode node) {
         if (node == null) {
             return true;
@@ -76,8 +81,30 @@ class Solution {
         return dfs(node.right);
     }
 
+    // dfs 模拟栈空间，没有全局状态，更安全
+    // 2ms 19.67% beat
+    // 37.9MB 79.12% beat
+    private boolean dfsManualStack(TreeNode node) {
+        long pre = Long.MIN_VALUE;
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        while(!stack.isEmpty() || node != null) {
+            while(node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            if(node.val <= pre)  {
+                return false;
+            }
+            pre = node.val;
+            node = node.right;
+        }
+        return true;
+    }
+
     public boolean isValidBST(TreeNode root) {
         return dfs(root);
+//        return dfsManualStack(root);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
