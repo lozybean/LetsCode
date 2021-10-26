@@ -74,8 +74,25 @@ class Solution {
         return reversed;
     }
 
+    private ListNode reverseWithoutRecursive(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode pre = head;
+        ListNode cur = head.next;
+        head.next = null;
+        while (cur != null) {
+            ListNode nxt = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = nxt;
+        }
+        return pre;
+    }
+
     public ListNode reverseList(ListNode head) {
-        return reverse(head);
+        return reverseWithoutRecursive(head);
+//        return reverse(head);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
