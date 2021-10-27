@@ -50,10 +50,8 @@ class Solution {
             return null;
         } else if (n1 == null) {
             res = n2;
-            res.next = merge(null, n2.next);
         } else if (n2 == null) {
             res = n1;
-            res.next = merge(n1.next, null);
         } else if (n1.val > n2.val) {
             res = n2;
             res.next = merge(n1, n2.next);
