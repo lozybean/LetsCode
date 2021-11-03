@@ -20,6 +20,50 @@ public class TreeNode {
         this.right = right;
     }
 
+    @Override
+    public String toString() {
+        return "TreeNode{" +
+                "val=" + val +
+                ", left=" + left +
+                ", right=" + right +
+                '}';
+    }
+
+    public static TreeNode constructByIntegerList(List<Integer> nums) {
+        if (nums.isEmpty() || nums.get(0) == null) {
+            return null;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        TreeNode root = new TreeNode(nums.get(0));
+        queue.add(root);
+        int idx = 0;
+        while (!queue.isEmpty() && idx < nums.size()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                idx++;
+                if(idx >= nums.size()) {
+                    break;
+                }
+                Integer leftVal = nums.get(idx);
+                if (leftVal != null) {
+                    node.left = new TreeNode(leftVal);
+                    queue.add(node.left);
+                }
+                idx++;
+                if(idx >= nums.size()) {
+                    break;
+                }
+                Integer rightVal = nums.get(idx);
+                if (rightVal != null) {
+                    node.right = new TreeNode(rightVal);
+                    queue.add(node.right);
+                }
+            }
+        }
+        return root;
+    }
+
     public static void preorderByRecursive(List<Integer> ans, TreeNode node) {
         if (node == null) {
             return;
