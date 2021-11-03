@@ -81,19 +81,29 @@ class Solution {
         return dfs(node.right);
     }
 
+    // 另一种递归方法
+    private boolean dfs(TreeNode node, Integer min, Integer max) {
+        if (node == null) {
+            return true;
+        }
+        if (max != null && node.val >= max) return false;
+        if (min != null && node.val <= min) return false;
+        return dfs(node.left, min, node.val) && dfs(node.right, node.val, max);
+    }
+
     // dfs 模拟栈空间，没有全局状态，更安全
     // 2ms 19.67% beat
     // 37.9MB 79.12% beat
     private boolean dfsManualStack(TreeNode node) {
         long pre = Long.MIN_VALUE;
         Deque<TreeNode> stack = new ArrayDeque<>();
-        while(!stack.isEmpty() || node != null) {
-            while(node != null) {
+        while (!stack.isEmpty() || node != null) {
+            while (node != null) {
                 stack.push(node);
                 node = node.left;
             }
             node = stack.pop();
-            if(node.val <= pre)  {
+            if (node.val <= pre) {
                 return false;
             }
             pre = node.val;
@@ -103,7 +113,8 @@ class Solution {
     }
 
     public boolean isValidBST(TreeNode root) {
-        return dfs(root);
+//        return dfs(root);
+        return dfs(root, null, null);
 //        return dfsManualStack(root);
     }
 }
