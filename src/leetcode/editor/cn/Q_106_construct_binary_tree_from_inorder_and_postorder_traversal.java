@@ -43,21 +43,19 @@ import java.util.*;
  * }
  */
 class Solution {
-    private TreeNode recoveryByInorderAndPostOrder(int[] inorder, int inStart, int inEnd,
-                                                   int[] postorder, int postStart, int postEnd,
+    private TreeNode recoveryByInorderAndPostOrder(int[] postorder, int postStart, int postEnd, int inStart,
                                                    Map<Integer, Integer> inMap) {
-        if (inStart > inEnd || postStart > postEnd) {
+        if (postStart > postEnd) {
             return null;
         }
         TreeNode root = new TreeNode(postorder[postEnd]);
         int rootPosition = inMap.get(root.val);
         int leftChildLen = rootPosition - inStart;
 
-        root.left = recoveryByInorderAndPostOrder(inorder, inStart, rootPosition - 1,
-                postorder, postStart, leftChildLen + postStart - 1,
+        root.left = recoveryByInorderAndPostOrder(postorder, postStart, leftChildLen + postStart - 1, inStart,
                 inMap);
-        root.right = recoveryByInorderAndPostOrder(inorder, rootPosition + 1, inEnd,
-                postorder, postStart + leftChildLen, postEnd - 1,
+        root.right = recoveryByInorderAndPostOrder(
+                postorder, postStart + leftChildLen, postEnd - 1, rootPosition + 1,
                 inMap);
         return root;
     }
@@ -67,7 +65,7 @@ class Solution {
         for (int i = 0; i < inorder.length; i++) {
             map.put(inorder[i], i);
         }
-        return recoveryByInorderAndPostOrder(inorder, 0, inorder.length - 1, postorder, 0, postorder.length - 1, map);
+        return recoveryByInorderAndPostOrder(postorder, 0, postorder.length - 1, 0, map);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -56,10 +56,9 @@ import java.util.*;
  * }
  */
 class Solution {
-    private TreeNode recoveryByPreorderAndInorder(int[] preorder, int preStart, int preEnd,
-                                                  int[] inorder, int inStart, int inEnd,
+    private TreeNode recoveryByPreorderAndInorder(int[] preorder, int preStart, int preEnd, int inStart,
                                                   Map<Integer, Integer> inMap) {
-        if (preStart > preEnd || inStart > inEnd) {
+        if (preStart > preEnd) {
             return null;
         }
 
@@ -67,10 +66,11 @@ class Solution {
         int rootPosition = inMap.get(root.val);
         int leftChildLen = rootPosition - inStart;
         root.left = recoveryByPreorderAndInorder(preorder, preStart + 1, preStart + leftChildLen,
-                inorder, inStart, rootPosition - 1,
+                inStart,
                 inMap);
         root.right = recoveryByPreorderAndInorder(preorder, preStart + leftChildLen + 1, preEnd,
-                inorder, rootPosition + 1, inEnd, inMap);
+                rootPosition + 1,
+                inMap);
         return root;
     }
 
@@ -80,7 +80,7 @@ class Solution {
         for (int i = 0; i < inorder.length; i++) {
             map.put(inorder[i], i);
         }
-        return recoveryByPreorderAndInorder(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1, map);
+        return recoveryByPreorderAndInorder(preorder, 0, preorder.length - 1,  0, map);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
