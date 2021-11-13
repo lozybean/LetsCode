@@ -61,6 +61,7 @@ class Solution {
         if (lo > hi) {
             return null;
         }
+
         int mid = lo + (hi - lo) / 2;
         TreeNode node = new TreeNode(nums[mid]);
         node.left = dfs(nums, lo, mid - 1);

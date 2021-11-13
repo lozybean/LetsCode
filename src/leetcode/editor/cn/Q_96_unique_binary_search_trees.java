@@ -34,26 +34,47 @@ import java.util.*;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    // G[n]: 长度为n的序列BST个数
+    // F[i,n]: 以i为root的BST个数
+    // G[n] = ∑F[i,n]
+    // F[i,n] = G[i-1] * G[n-i]，即左子树BST个数*右子树BST个数
+    private int byDp(int n) {
+        int[] dp = new int[n + 1];
+        // 由于后续做乘法，使用 1
+        dp[0] = 1;
+        dp[1] = 1;
+
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                dp[i] += dp[j - 1] * dp[i - j];
+            }
+        }
+        return dp[n];
+    }
+
+    // 递归求解，使用path缓存结果降低计算量
     private int[][] path;
 
-    private int numTrees(int start, int end) {
+    private int byLoop(int start, int end) {
         if (start > end) return 1;
         if (path[start][end] > 0) {
             return path[start][end];
         }
         int res = 0;
         for (int i = start; i <= end; i++) {
-            int leftNum = numTrees(start, i - 1);
-            int rightNum = numTrees(i + 1, end);
+            int leftNum = byLoop(start, i - 1);
+            int rightNum = byLoop(i + 1, end);
             res += leftNum * rightNum;
         }
+
         path[start][end] = res;
         return res;
     }
 
     public int numTrees(int n) {
-        path = new int[n + 1][n + 1];
-        return numTrees(1, n);
+//        path = new int[n + 1][n + 1];
+//        return byLoop(1, n);
+        return byDp(n);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

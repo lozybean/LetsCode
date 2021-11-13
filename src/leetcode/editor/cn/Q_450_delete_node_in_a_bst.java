@@ -80,12 +80,12 @@ import java.util.*;
  * }
  */
 class Solution {
-
-
-    public TreeNode deleteNode(TreeNode root, int key) {
+    // 替换Node，当node中包含其他属性时，使用替换更加可靠
+    private TreeNode changeNode(TreeNode root, int key) {
         if (root == null) {
             return null;
         }
+
         if (root.val == key) {
             if (root.left == null) return root.right;
             if (root.right == null) return root.left;
@@ -112,11 +112,38 @@ class Solution {
                 node.left = minRightChild;
             }
         } else if (root.val > key) {
-            root.left = deleteNode(root.left, key);
+            root.left = changeNode(root.left, key);
         } else {
-            root.right = deleteNode(root.right, key);
+            root.right = changeNode(root.right, key);
         }
         return root;
+    }
+
+    // 只替换node的值，而不实际替换node
+    private TreeNode changeVal(TreeNode root, int key) {
+        if (root == null) return null;
+        if (root.val > key) {
+            root.left = changeVal(root.left, key);
+        } else if (root.val < key) {
+            root.right = changeNode(root.right, key);
+        } else if (root.left == null) {
+            return root.right;
+        } else if (root.right == null) {
+            return root.left;
+        } else {
+            TreeNode rightMin = root.right;
+            while (rightMin.left != null) {
+                rightMin = rightMin.left;
+            }
+            root.val = rightMin.val;
+            // 递归替换
+            root.right = changeVal(root.right, root.val);
+        }
+        return root;
+    }
+
+    public TreeNode deleteNode(TreeNode root, int key) {
+        return changeVal(root, key);
     }
 
 }
