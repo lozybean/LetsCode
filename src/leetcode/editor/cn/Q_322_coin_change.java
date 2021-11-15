@@ -60,17 +60,18 @@ import java.util.*;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    // dp[i] 表示 i 面额 的最少硬币个数
     public int coinChange(int[] coins, int amount) {
         int[] dp = new int[amount + 1];
         // 边界条件
         dp[0] = 0;
         for (int i = 1; i <= amount; i++) {
+            // invalid
             dp[i] = amount + 1;
-            for (int coin : coins) {
-                if (i < coin) {
-                    continue;
-                }
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+        }
+        for (int i = 0; i < coins.length; i++) {
+            for (int j = coins[i]; j <= amount; j++) {
+                dp[j] = Math.min(dp[j], dp[j - coins[i]] + 1);
             }
         }
         if (dp[amount] == amount + 1) {

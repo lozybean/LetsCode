@@ -47,6 +47,7 @@ class Solution {
     // dp[0] = true
     private boolean byDp(int[] nums) {
         // 只有一个不行
+
         if (nums.length < 2) return false;
         int sum = Arrays.stream(nums).sum();
         // 和是奇数也不行
