@@ -47,6 +47,8 @@ class Solution {
             res.add(new LinkedList<>(track));
         }
         for (int i = 0; i < nums.length; i++) {
+            // 全排列时，当vis[i-1]使用过，意味着再选一个相同的数，得到的结果仍然相同
+            // 区别子集，子集中，若有重复元素，则条件为前一个相同的元素没有被选择的情况下过滤
             if (vis[i] || (i > 0 && vis[i - 1] && nums[i] == nums[i - 1])) {
                 continue;
             }

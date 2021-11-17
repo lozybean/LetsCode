@@ -71,13 +71,35 @@ class Solution {
         }
     }
 
+    // 增加used状态：意味着不能重复取同一个数
+    boolean[] used;
+    private void backtrack2(int[] nums, List<Integer> stack) {
+        if (stack.size() == nums.length) {
+            res.add(new LinkedList<>(stack));
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i]) {
+                continue;
+            }
+            used[i] = true;
+            stack.add(nums[i]);
+            backtrack2(nums, stack);
+            used[i] = false;
+            stack.remove(stack.size() - 1);
+        }
+    }
+
     public List<List<Integer>> permute(int[] nums) {
         List<Integer> stack = new LinkedList<>();
-        for (int num : nums) {
-            stack.add(num);
-        }
-        backtrack(stack, 0, nums.length);
+//        for (int num : nums) {
+//            stack.add(num);
+//        }
+        used = new boolean[nums.length];
+        backtrack2(nums, stack);
+//        backtrack(stack, 0, nums.length);
         return res;
+
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
