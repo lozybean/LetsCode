@@ -43,12 +43,10 @@ import java.util.*;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     private int res = 0;
+    boolean[] colQueue;
 
     private boolean isValid(char[][] board, int row, int col) {
-        for (int i = 0; i < row; i++) {
-            if (board[i][col] == 'Q') return false;
-
-        }
+        if (colQueue[col]) return false;
         for (int i = row - 1, j = col + 1; i >= 0 && j < board.length; i--, j++) {
             if (board[i][j] == 'Q') return false;
         }
@@ -67,14 +65,17 @@ class Solution {
             if (!isValid(board, row, col)) {
                 continue;
             }
+            colQueue[col] = true;
             board[row][col] = 'Q';
             backtrack(n, board, row + 1);
             board[row][col] = '.';
+            colQueue[col] = false;
         }
     }
 
     public int totalNQueens(int n) {
         char[][] board = new char[n][n];
+        colQueue = new boolean[n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 board[i][j] = '.';

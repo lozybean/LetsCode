@@ -45,12 +45,10 @@ import java.util.*;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     private List<List<String>> res = new LinkedList<>();
+    boolean[] colQueue;
 
     private boolean isValid(char[][] board, int row, int col) {
-        for (int i = 0; i < row; i++) {
-            if (board[i][col] == 'Q') return false;
-
-        }
+        if (colQueue[col]) return false;
         for (int i = row - 1, j = col + 1; i >= 0 && j < board.length; i--, j++) {
             if (board[i][j] == 'Q') return false;
         }
@@ -60,34 +58,36 @@ class Solution {
         return true;
     }
 
-    private void backtrack(int n, char[][] board, int row) {
+    private void backtrack(char[][] board, int row) {
         if (row == board.length) {
             List<String> temp = new LinkedList<>();
             for (char[] r : board) {
-                temp.add(String.valueOf(r))
-                ;
+                temp.add(String.valueOf(r));
             }
             res.add(temp);
             return;
         }
-        for (int col = 0; col < n; col++) {
+        for (int col = 0; col < board.length; col++) {
             if (!isValid(board, row, col)) {
                 continue;
             }
+            colQueue[col] = true;
             board[row][col] = 'Q';
-            backtrack(n, board, row + 1);
+            backtrack(board, row + 1);
             board[row][col] = '.';
+            colQueue[col] = false;
         }
     }
 
     public List<List<String>> solveNQueens(int n) {
         char[][] board = new char[n][n];
+        colQueue = new boolean[n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 board[i][j] = '.';
             }
         }
-        backtrack(n, board, 0);
+        backtrack(board, 0);
         return res;
     }
 }
