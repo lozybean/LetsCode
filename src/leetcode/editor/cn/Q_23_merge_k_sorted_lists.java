@@ -106,8 +106,32 @@ class Solution {
         return mergeTwoList(binaryMerge(lists, l, mid), binaryMerge(lists, mid + 1, r));
     }
 
+    public ListNode mergeByMiniHeap(ListNode[] lists) {
+        if(lists.length == 0){
+            return null;
+        }
+        ListNode dummy = new ListNode();
+        ListNode p = dummy;
+        // 最小堆
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>(lists.length, (a, b) -> (a.val - b.val));
+        for(ListNode head : lists) {
+            if(head != null) minHeap.add(head);
+        }
+        while(!minHeap.isEmpty()){
+            ListNode node = minHeap.poll();
+            p.next = node;
+            if(node.next != null) {
+                minHeap.add(node.next);
+            }
+            p = p.next;
+        }
+        return dummy.next;
+    }
+
+
     public ListNode mergeKLists(ListNode[] lists) {
-        return binaryMerge(lists, 0, lists.length - 1);
+//        return binaryMerge(lists, 0, lists.length - 1);
+        return mergeByMiniHeap(lists);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

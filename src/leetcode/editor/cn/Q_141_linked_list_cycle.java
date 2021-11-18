@@ -78,10 +78,12 @@ class Solution {
         while (slow != null && fast != null) {
             fast = fast.next;
             if (fast == null) {
+                // 如果有环，则不可能到头
                 return false;
             }
             fast = fast.next;
             if (fast == slow) {
+                // 成环时，快慢指针必然相遇，可以提前退出
                 return true;
             }
             slow = slow.next;

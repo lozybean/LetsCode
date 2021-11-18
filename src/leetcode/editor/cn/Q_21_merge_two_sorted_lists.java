@@ -44,6 +44,30 @@ import java.util.*;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    // 没有栈空间消耗
+    public ListNode merge2(ListNode n1, ListNode n2) {
+        ListNode dummy = new ListNode();
+        ListNode p = dummy;
+        while (n1 != null && n2 != null) {
+            if (n1.val > n2.val) {
+                p.next = n2;
+                n2 = n2.next;
+            } else {
+                p.next = n1;
+                n1 = n1.next;
+            }
+            p = p.next;
+        }
+        // 连最后的尾巴
+        if (n1 != null) {
+            p.next = n1;
+        }
+        if (n2 != null) {
+            p.next = n2;
+        }
+        return dummy.next;
+    }
+
     public ListNode merge(ListNode n1, ListNode n2) {
         ListNode res;
         if (n1 == null && n2 == null) {
@@ -63,7 +87,8 @@ class Solution {
     }
 
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        return merge(l1, l2);
+//        return merge(l1, l2);
+        return merge2(l1, l2);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

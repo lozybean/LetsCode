@@ -78,12 +78,18 @@ class Solution {
         ListNode fast = head;
         ListNode slow = head;
         while(fast != null && slow != null) {
+            // 同Q141，先通过快慢指针找到相遇点
             fast = fast.next;
             if(fast == null) {
                 return null;
             }
             fast = fast.next;
             slow = slow.next;
+
+            // 相遇时，慢指针走了k步，快指针走了2k步
+            // 若入环点到相遇点的长度为 m ， 从起点到入环点的长度为 k - m
+            // 同时相遇点朝前进方向继续走 k-m ，一样会回到入环点
+            // 再次相交的位置就是入环点
             if(fast == slow) {
                 ListNode node = head;
                 while(node != slow) {

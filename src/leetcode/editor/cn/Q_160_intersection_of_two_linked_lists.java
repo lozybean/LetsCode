@@ -89,7 +89,8 @@ import java.util.*;
  * }
  */
 class Solution {
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    // 1ms 99.98%beat
+    private ListNode byLoop(ListNode headA, ListNode headB) {
         if (headA == null || headB == null) {
             return null;
         }
@@ -127,6 +128,33 @@ class Solution {
         }
         tailA.next = null;
         return null;
+    }
+
+    private ListNode byCross(ListNode headA, ListNode headB) {
+        ListNode p1 = headA;
+        ListNode p2 = headB;
+        // 当p1走到末尾时，从B链表开始走
+        // 当p2走到末尾时，从A链表开始走
+        // 等到相遇时，走过的路程相同
+        // 若没有相交，此时p1/p2都为null
+        while (p1 != p2) {
+            if (p1 == null) {
+                p1 = headB;
+            } else {
+                p1 = p1.next;
+            }
+            if (p2 == null) {
+                p2 = headA;
+            } else {
+                p2 = p2.next;
+            }
+        }
+        return p1;
+    }
+
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+//        return byLoop(headA, headB);
+        return byCross(headA, headB);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
