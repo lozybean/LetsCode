@@ -63,6 +63,7 @@ class Solution {
     }
 
     public int numIslands(char[][] grid) {
+
         int count = 0;
         for (int row = 0; row < grid.length; row++) {
             for (int col = 0; col < grid[row].length; col++) {
